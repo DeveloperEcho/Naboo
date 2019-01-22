@@ -47,11 +47,16 @@
      ^(NSData * _Nullable data,
        NSURLResponse * _Nullable response,
        NSError * _Nullable error) {
-         
-         NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-         NSLog(@"Data received: %@", responseStr);
-         NSLog(@"Register User");
+         if (!error) {
+             NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+             NSLog(@"Data received: %@", responseStr);
+             NSLog(@"Register User");
+             completitionHandler(YES,responseStr);
+         } else {
+             completitionHandler(NO,nil);
+         }
      }];
+    
 }
 
 - (void)forgotPasswordWithCompletion:(void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
