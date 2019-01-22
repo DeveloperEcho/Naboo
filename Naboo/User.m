@@ -49,11 +49,18 @@
        NSError * _Nullable error) {
          if (!error) {
              NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-             NSLog(@"Data received: %@", responseStr);
+             NSData* jsonData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
+             
+             NSError *error = nil;
+             NSDictionary  *responseDict = [NSJSONSerialization
+                                      JSONObjectWithData:jsonData
+                                      options:0
+                                      error:&error];
+             NSLog(@"Data received: %@", responseDict);
              NSLog(@"Register User");
-             completitionHandler(YES,responseStr);
+             completitionHandler(YES,responseDict);
          } else {
-             completitionHandler(NO,nil);
+             completitionHandler(NO,[[NSDictionary alloc] init]);
          }
      }];
     
