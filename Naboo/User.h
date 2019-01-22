@@ -19,14 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype)initWithDictionary:(NSDictionary*)userDict;
 
--(void)registerUser:(NSDictionary*)userDict;
--(void)forgotPassword;
--(void)activateUserAccount;
--(void)loginWithSocialConnector:(NSString*)socialConnector;
--(void)loginWithUserName:(NSString*)username password:(NSString*)password;
--(void)changePasswordWithUsername:(NSString*)username oldPassword:(NSString*)oldPassword newPassword:(NSString*)newPassword;
--(void)getUserAccount:(NSString*)username;
--(void)updateUserAccount:(NSDictionary*)dictionary;
+-(void)registerUser:(NSDictionary*)userDict withCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+-(void)forgotPasswordWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+-(void)activateUserAccountWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+-(void)loginWithSocialConnector:(NSString*)socialConnectorWithCompletion completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+-(void)loginWithUserName:(NSString*)username password:(NSString*)password completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
+-(void)changePasswordWithUsername:(NSString*)username oldPassword:(NSString*)oldPassword newPassword:(NSString*)newPassword completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
+-(void)getUserAccount:(NSString*)username completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
+-(void)updateUserAccount:(NSDictionary*)dictionary completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
 -(void)logConfiguration;
 
 @end
