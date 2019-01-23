@@ -32,37 +32,37 @@
     // treba da se definire kakvo dictionary ke ode do server.
     NabooApp *app = [NabooApp sharedInstance];
     
-    NSString *targetUrl = [NSString stringWithFormat:@"%@/RegisterUser", app.configuration.server];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    
-    //Make an NSDictionary that would be converted to an NSData object sent over as JSON with the request body
-    NSError *error;
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
-    
-    [request setHTTPBody:postData];
-    [request setHTTPMethod:@"POST"];
-    [request setURL:[NSURL URLWithString:targetUrl]];
-    
-    [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:
-     ^(NSData * _Nullable data,
-       NSURLResponse * _Nullable response,
-       NSError * _Nullable error) {
-         if (!error) {
-             NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-             NSData* jsonData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
-             
-             NSError *error = nil;
-             NSDictionary  *responseDict = [NSJSONSerialization
-                                      JSONObjectWithData:jsonData
-                                      options:0
-                                      error:&error];
-             NSLog(@"Data received: %@", responseDict);
-             NSLog(@"Register User");
-             completitionHandler(YES,responseDict);
-         } else {
-             completitionHandler(NO,[[NSDictionary alloc] init]);
-         }
-     }];
+//    NSString *targetUrl = [NSString stringWithFormat:@"%@/RegisterUser", app.configuration.server];
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//
+//    //Make an NSDictionary that would be converted to an NSData object sent over as JSON with the request body
+//    NSError *error;
+//    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
+//
+//    [request setHTTPBody:postData];
+//    [request setHTTPMethod:@"POST"];
+//    [request setURL:[NSURL URLWithString:targetUrl]];
+//
+//    [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:
+//     ^(NSData * _Nullable data,
+//       NSURLResponse * _Nullable response,
+//       NSError * _Nullable error) {
+//         if (!error) {
+//             NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//             NSData* jsonData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
+//
+//             NSError *error = nil;
+//             NSDictionary  *responseDict = [NSJSONSerialization
+//                                      JSONObjectWithData:jsonData
+//                                      options:0
+//                                      error:&error];
+//             NSLog(@"Data received: %@", responseDict);
+//             NSLog(@"Register User");
+//             completitionHandler(YES,responseDict);
+//         } else {
+//             completitionHandler(NO,[[NSDictionary alloc] init]);
+//         }
+//     }];
     
 }
 
