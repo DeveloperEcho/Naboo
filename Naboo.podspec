@@ -90,7 +90,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "Naboo", "Naboo/**/*.{h,m}"
-  s.exclude_files = "Naboo/**/*.{m}"
+  #s.exclude_files = "Naboo/**/*.{m}"
 
   # s.public_header_files = "Classes/**/*.h"
 
