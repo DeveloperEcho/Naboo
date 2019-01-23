@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)getUserAccount:(NSString*)username completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
 -(void)updateUserAccount:(NSDictionary*)dictionary completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
 -(void)logConfiguration;
-//test
+//test bitcode
 @end
 
 NS_ASSUME_NONNULL_END
