@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "Naboo"
-  s.version      = "0.0.1"
+  s.version      = "2.0.1"
   s.summary      = "Naboo is a framework for authorization and authentication"
 
   # This description is used to generate tags and improve search results.
@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Naboo", "Naboo/**/*.{h,m}"
+  s.source_files  = "Naboo", "Naboo/**/*"
   #s.exclude_files = "Naboo/**/*.{m}"
 
   # s.public_header_files = "Classes/**/*.h"
