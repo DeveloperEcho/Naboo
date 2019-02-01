@@ -10,12 +10,13 @@
 
 @implementation NabooConfiguration
 
--(id)initWithApplicationId:(NSString *)applicationId clientKey:(NSString *)clientKey server:(NSString *)server {
+-(id)initWithApplicationId:(NSString *)applicationId clientKey:(NSString *)clientKey server:(NSString *)server microsoftLoginConnectorsUrl:(NSString*)url{
     self = [super init];
     if (self) {
         self.applicationId = applicationId;
         self.clientKey = clientKey;
         self.server = server;
+        self.client = [MSClient clientWithApplicationURL:[NSURL URLWithString:url]];
     }
     return self;
 }

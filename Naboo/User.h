@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface User : NSObject
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)registerUser:(NSDictionary*)userDict withCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
 -(void)forgotPasswordWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
 -(void)activateUserAccountWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
--(void)loginWithSocialConnector:(NSString*)socialConnectorWithCompletion completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+- (void)loginWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler;
 -(void)loginWithUserName:(NSString*)username password:(NSString*)password completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
 -(void)changePasswordWithUsername:(NSString*)username oldPassword:(NSString*)oldPassword newPassword:(NSString*)newPassword completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
 -(void)getUserAccount:(NSString*)username completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;

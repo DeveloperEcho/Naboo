@@ -1,0 +1,1 @@
+../../../MicrosoftAzureMobile/sdk/src/MSClientConnection.h

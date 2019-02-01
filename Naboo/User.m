@@ -8,6 +8,7 @@
 
 #import "User.h"
 #import "NabooApp.h"
+#import <MicrosoftAzureMobile.h>
 
 @implementation User
 
@@ -26,44 +27,8 @@
 }
 
 - (void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
-    
-    
     // treba da se naprave tuka registracija na user
     // treba da se definire kakvo dictionary ke ode do server.
-    NabooApp *app = [NabooApp sharedInstance];
-    
-    NSString *targetUrl = [NSString stringWithFormat:@"%@/RegisterUser", app.configuration.server];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-
-    //Make an NSDictionary that would be converted to an NSData object sent over as JSON with the request body
-    NSError *error;
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
-
-    [request setHTTPBody:postData];
-    [request setHTTPMethod:@"POST"];
-    [request setURL:[NSURL URLWithString:targetUrl]];
-
-    [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:
-     ^(NSData * _Nullable data,
-       NSURLResponse * _Nullable response,
-       NSError * _Nullable error) {
-         if (!error) {
-             NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-             NSData* jsonData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
-
-             NSError *error = nil;
-             NSDictionary  *responseDict = [NSJSONSerialization
-                                      JSONObjectWithData:jsonData
-                                      options:0
-                                      error:&error];
-             NSLog(@"Data received: %@", responseDict);
-             NSLog(@"Register User");
-             completitionHandler(YES,responseDict);
-         } else {
-             completitionHandler(NO,[[NSDictionary alloc] init]);
-         }
-     }];
-    
 }
 
 - (void)forgotPasswordWithCompletion:(void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
@@ -71,7 +36,19 @@
     NSLog(@"FORGOT PASSWORD");
 }
 
-- (void)loginWithSocialConnector:(NSString *)socialConnector completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
+- (void)loginWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    MSClient *client = app.configuration.client;
+    [client loginWithProvider:socialConnector urlScheme:urlScheme controller:controller animated:YES completion:^(MSUser * _Nullable user, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Login failed with error: %@, %@", error, [error userInfo]);
+            completitionHandler(NO,nil);
+        } else {
+            client.currentUser = user;
+            NSString* token = client.currentUser.mobileServiceAuthenticationToken;
+            completitionHandler(YES,token);
+        }
+    }];
     // treba da se naprave povik do azure najverojatno za social network login, istoto so e na tvizzy
     NSLog(@"Login with social connector %@",socialConnector);
 }
@@ -105,46 +82,4 @@
     NSLog(@"Activate user account");
 }
 
-/*
- // making a GET request to /init
- NSString *targetUrl = [NSString stringWithFormat:@"%@/init", baseUrl];
- NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
- [request setHTTPMethod:@"GET"];
- [request setURL:[NSURL URLWithString:targetUrl]];
- 
- [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:
- ^(NSData * _Nullable data,
- NSURLResponse * _Nullable response,
- NSError * _Nullable error) {
- 
- NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
- NSLog(@"Data received: %@", myString);
- }] resume];
- */
-
-/*
- // making a POST request to /init
- NSString *targetUrl = [NSString stringWithFormat:@"%@/init", baseUrl];
- NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
- 
- //Make an NSDictionary that would be converted to an NSData object sent over as JSON with the request body
- NSDictionary *tmp = [[NSDictionary alloc] initWithObjectsAndKeys:
- @"basic_attribution", @"scenario_type",
- nil];
- NSError *error;
- NSData *postData = [NSJSONSerialization dataWithJSONObject:tmp options:0 error:&error];
- 
- [request setHTTPBody:postData];
- [request setHTTPMethod:@"POST"];
- [request setURL:[NSURL URLWithString:targetUrl]];
- 
- [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:
- ^(NSData * _Nullable data,
- NSURLResponse * _Nullable response,
- NSError * _Nullable error) {
- 
- NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
- NSLog(@"Data received: %@", responseStr);
- }] resume];
- */
 @end

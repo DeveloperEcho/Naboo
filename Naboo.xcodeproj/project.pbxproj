@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD7EDA9C7F3DC68272299D12 /* libPods-Naboo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0C76A35EB8BE925AC79E6B6 /* libPods-Naboo.a */; };
 		F4B7C4AC21F71999009A1D5A /* Naboo.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B7C4AA21F71999009A1D5A /* Naboo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4B7C4B421F719AD009A1D5A /* User.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B7C4B221F719AD009A1D5A /* User.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4B7C4B521F719AD009A1D5A /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B7C4B321F719AD009A1D5A /* User.m */; };
@@ -17,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		60A246A6AA61A91B14638954 /* Pods-Naboo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naboo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Naboo/Pods-Naboo.release.xcconfig"; sourceTree = "<group>"; };
+		B0C76A35EB8BE925AC79E6B6 /* libPods-Naboo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Naboo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F056E2666DF7225EE1546498 /* Pods-Naboo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naboo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Naboo/Pods-Naboo.debug.xcconfig"; sourceTree = "<group>"; };
 		F4B7C4A721F71999009A1D5A /* Naboo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Naboo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B7C4AA21F71999009A1D5A /* Naboo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Naboo.h; sourceTree = "<group>"; };
 		F4B7C4AB21F71999009A1D5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -33,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD7EDA9C7F3DC68272299D12 /* libPods-Naboo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14A86A5CC737E29910E61166 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B0C76A35EB8BE925AC79E6B6 /* libPods-Naboo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		544DFB8E24F8EEB23939F7A4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F056E2666DF7225EE1546498 /* Pods-Naboo.debug.xcconfig */,
+				60A246A6AA61A91B14638954 /* Pods-Naboo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F4B7C49D21F71999009A1D5A = {
 			isa = PBXGroup;
 			children = (
 				F4B7C4A921F71999009A1D5A /* Naboo */,
 				F4B7C4A821F71999009A1D5A /* Products */,
+				544DFB8E24F8EEB23939F7A4 /* Pods */,
+				14A86A5CC737E29910E61166 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,6 +115,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4B7C4AF21F71999009A1D5A /* Build configuration list for PBXNativeTarget "Naboo" */;
 			buildPhases = (
+				E3E1A36CE6E642E819539A8B /* [CP] Check Pods Manifest.lock */,
 				F4B7C4A221F71999009A1D5A /* Headers */,
 				F4B7C4A321F71999009A1D5A /* Sources */,
 				F4B7C4A421F71999009A1D5A /* Frameworks */,
@@ -145,6 +170,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E3E1A36CE6E642E819539A8B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Naboo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F4B7C4A321F71999009A1D5A /* Sources */ = {
@@ -281,6 +331,7 @@
 		};
 		F4B7C4B021F71999009A1D5A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F056E2666DF7225EE1546498 /* Pods-Naboo.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -290,6 +341,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Naboo",
+				);
 				INFOPLIST_FILE = Naboo/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -307,6 +362,7 @@
 		};
 		F4B7C4B121F71999009A1D5A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60A246A6AA61A91B14638954 /* Pods-Naboo.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -316,6 +372,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Naboo",
+				);
 				INFOPLIST_FILE = Naboo/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

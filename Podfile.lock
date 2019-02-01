@@ -1,0 +1,16 @@
+PODS:
+  - MicrosoftAzureMobile (3.4.0)
+
+DEPENDENCIES:
+  - MicrosoftAzureMobile (~> 3.4.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MicrosoftAzureMobile
+
+SPEC CHECKSUMS:
+  MicrosoftAzureMobile: 82719f7f9e1e3389d5c2fe5f6be034c344004e12
+
+PODFILE CHECKSUM: c65a25549176a2314e9fd2f6fe3016f773e5bfbf
+
+COCOAPODS: 1.5.3
