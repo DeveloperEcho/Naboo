@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char NabooVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <Naboo/PublicHeader.h>
 #import <Naboo/User.h>
 #import <Naboo/NabooApp.h>
+#import <Naboo/MicrosoftAzureMobile.h>
