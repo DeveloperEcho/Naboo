@@ -220,7 +220,6 @@
 
 -(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -348,7 +347,6 @@
 #pragma mark - User Account
 - (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -384,7 +382,7 @@
     [postDataTask resume];
 }
 
-- (void)updateUserAccount:(NSDictionary *)userDict completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
+- (void)updateUserAccount:(NSDictionary *)userDict accessToken:(NSString*)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -427,7 +425,6 @@
 #pragma mark - Additional Data
 - (void)getSocialConnectors:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
     NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -439,7 +436,7 @@
     
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
     //Method and Parameters
     [request setHTTPMethod:@"GET"];
@@ -476,7 +473,7 @@
     
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
     //Method and Parameters
     NSDictionary *parameters = @{
@@ -524,14 +521,14 @@
     
     //Method and Parameters
     [request setHTTPMethod:@"POST"];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
     [request setHTTPBody:postData];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            completitionHandler(NO);
         } else {
            completitionHandler(YES);
         }
