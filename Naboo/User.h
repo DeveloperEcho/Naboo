@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 
-@interface User : NSObject
+@interface User : NSObject <NSURLSessionDelegate>
 
 // User Properties
 @property (nonatomic,assign) long userId;

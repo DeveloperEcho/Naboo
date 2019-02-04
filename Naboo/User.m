@@ -26,9 +26,43 @@
     return self;
 }
 
-- (void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
-    // treba da se naprave tuka registracija na user
-    // treba da se definire kakvo dictionary ke ode do server.
+- (void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL, NSDictionary *))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:app.configuration.server];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:@"APIAccessKey"];
+    
+    //Method and Parameters
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            completitionHandler(NO,nil);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            BOOL isSuccessful = [responseDict valueForKey:@"IsSuccessful"];
+            if (isSuccessful) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
 }
 
 - (void)forgotPasswordWithCompletion:(void (^)(BOOL, NSDictionary * _Nonnull))completitionHandler {
