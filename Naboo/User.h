@@ -19,15 +19,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype)initWithDictionary:(NSDictionary*)userDict;
 
--(void)registerUser:(NSDictionary*)userDict withCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
--(void)forgotPasswordWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
--(void)activateUserAccountWithCompletion:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;
+- (void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler;
+- (void)forgotPasswordForEmail:(NSString*)email withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler;
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password deviceId:(NSString*)deviceId completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 - (void)loginWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler;
--(void)loginWithUserName:(NSString*)username password:(NSString*)password completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
--(void)changePasswordWithUsername:(NSString*)username oldPassword:(NSString*)oldPassword newPassword:(NSString*)newPassword completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
--(void)getUserAccount:(NSString*)username completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
--(void)updateUserAccount:(NSDictionary*)dictionary completitionHandler:(void (^)(BOOL success,NSDictionary* dictionary))completitionHandler;;
+- (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+-(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+-(void)refreshToken:(NSString*)accessToken andDeviceId:(NSString*)deviceId  withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+-(void)setPassword:(NSString*)password withAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+
+- (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+- (void)updateUserAccount:(NSDictionary *)userDict completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 -(void)logConfiguration;
+
+- (void)getSocialConnectors:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+- (void)userInterests:(NSString *)searchValue completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler;
+
+- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL))completitionHandler;
+ 
 //test bitcode
 @end
 

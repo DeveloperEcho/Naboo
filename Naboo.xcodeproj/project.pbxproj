@@ -20,6 +20,7 @@
 /* Begin PBXFileReference section */
 		60A246A6AA61A91B14638954 /* Pods-Naboo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naboo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Naboo/Pods-Naboo.release.xcconfig"; sourceTree = "<group>"; };
 		B0C76A35EB8BE925AC79E6B6 /* libPods-Naboo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Naboo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCA54D2B2208907600EA24A9 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		F056E2666DF7225EE1546498 /* Pods-Naboo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Naboo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Naboo/Pods-Naboo.debug.xcconfig"; sourceTree = "<group>"; };
 		F4B7C4A721F71999009A1D5A /* Naboo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Naboo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B7C4AA21F71999009A1D5A /* Naboo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Naboo.h; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				F4B7C4AA21F71999009A1D5A /* Naboo.h */,
+				DCA54D2B2208907600EA24A9 /* Constants.h */,
 				F4B7C4AB21F71999009A1D5A /* Info.plist */,
 				F4B7C4B221F719AD009A1D5A /* User.h */,
 				F4B7C4B321F719AD009A1D5A /* User.m */,
@@ -177,15 +179,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Naboo-checkManifestLockResult.txt",
 			);
