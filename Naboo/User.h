@@ -29,13 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setPassword:(NSString*)password withAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 
 - (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
-- (void)updateUserAccount:(NSDictionary *)userDict completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+- (void)updateUserAccount:(NSDictionary *)userDict accessToken:(NSString*)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 -(void)logConfiguration;
 
 - (void)getSocialConnectors:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 - (void)userInterests:(NSString *)searchValue completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler;
 
-- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL))completitionHandler;
+- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler;
  
 //test bitcode
 @end

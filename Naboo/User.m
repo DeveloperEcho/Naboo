@@ -55,11 +55,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -97,15 +98,17 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
             }
+        }
         }
     }];
     [postDataTask resume];
@@ -142,11 +145,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -204,11 +208,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -241,11 +246,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -285,11 +291,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -329,11 +336,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -368,11 +376,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -408,11 +417,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -445,11 +455,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -488,11 +499,12 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO,nil);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            int isSuccessful = [[responseDict valueForKey:@"IsSuccessful"] intValue];
-            if (isSuccessful == 1) {
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
@@ -503,7 +515,7 @@
 }
 
 #pragma mark - Device Operations
-- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL))completitionHandler {
+- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -528,9 +540,16 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            completitionHandler(NO);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
         } else {
-           completitionHandler(YES);
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
         }
     }];
     [postDataTask resume];
