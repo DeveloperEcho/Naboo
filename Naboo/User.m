@@ -109,7 +109,6 @@
                 completitionHandler(NO,responseDict);
             }
         }
-        }
     }];
     [postDataTask resume];
 }
