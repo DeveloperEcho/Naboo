@@ -43,6 +43,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
@@ -83,6 +84,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
@@ -126,6 +128,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
@@ -189,6 +192,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:accessToken forHTTPHeaderField:kAuthorization];
@@ -234,6 +238,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:accessToken forHTTPHeaderField:kAuthorization];
@@ -273,6 +278,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
@@ -318,6 +324,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:accessToken forHTTPHeaderField:kAuthorization];
@@ -364,6 +371,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:accessToken forHTTPHeaderField:kAuthorization];
@@ -403,6 +411,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:accessToken forHTTPHeaderField:kAuthorization];
@@ -482,6 +491,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
@@ -527,6 +537,7 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
