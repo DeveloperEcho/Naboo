@@ -162,7 +162,7 @@
     [postDataTask resume];
 }
 
-- (void)loginWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler {
+- (void)connectWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     MSClient *client = app.configuration.client;
     [client loginWithProvider:socialConnector urlScheme:urlScheme controller:controller animated:YES completion:^(MSUser * _Nullable user, NSError * _Nullable error) {
@@ -177,6 +177,48 @@
     }];
     // treba da se naprave povik do azure najverojatno za social network login, istoto so e na tvizzy
     NSLog(@"Login with social connector %@",socialConnector);
+}
+
+- (void)loginWithSocialConnector:(NSString*)authToken withDictionary:(NSDictionary*)dictionary  withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kSocialConnectorSignIn]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:authToken forHTTPHeaderField:kMobileToken];
+    
+    //Method and Parameters
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
 }
 
 - (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{

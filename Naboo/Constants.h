@@ -12,6 +12,7 @@
 
 static NSString * const kApiKey = @"APIAccessKey";
 static NSString * const kAuthorization = @"Authorization"; 
+static NSString * const kMobileToken = @"MOBILE-SERVICE-AUTH-TOKEN";
 
 //User Authentication
 static NSString * const kRegisterUser = @"RegisterUser";
@@ -21,6 +22,8 @@ static NSString * const kChangePassword = @"ChangePassword";
 static NSString * const kLogoutUser = @"LogoutUser";
 static NSString * const kRefreshToken = @"RefreshToken";
 static NSString * const kSetPassword = @"SetPassword";
+
+static NSString * const kSocialConnectorSignIn = @"SocialConnectorSignin";
 
 //User Account
 static NSString * const kGetUserAccount = @"GetUserAccount";
