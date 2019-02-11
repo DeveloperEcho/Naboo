@@ -413,10 +413,9 @@
                                                        timeoutInterval:60.0];
     
     //Header Fields
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     [request setHTTPMethod:@"GET"];

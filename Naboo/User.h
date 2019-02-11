@@ -27,7 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 -(void)refreshToken:(NSString*)accessToken andDeviceId:(NSString*)deviceId  withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 -(void)setPassword:(NSString*)password withAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
-
 -(void)loginWithSocialConnector:(NSString*)authToken withDictionary:(NSDictionary*)dictionary  withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler;
 
 -(void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
