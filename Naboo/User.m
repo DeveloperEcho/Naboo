@@ -30,91 +30,6 @@
 
 
 #pragma mark - User Authentication
-- (void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler {
-    NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
-    
-    //Configuration
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kRegisterUser]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    //Header Fields
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    
-    //Method and Parameters
-    [request setHTTPMethod:@"POST"];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error];
-    [request setHTTPBody:postData];
-    
-    //Session Task
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-        if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
-        } else {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
-            } else {
-                completitionHandler(NO,responseDict);
-            }
-        }
-    }];
-    [postDataTask resume];
-}
-
-- (void)forgotPasswordForEmail:(NSString*)email withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler {
-    NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
-    
-    //Configuration
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kForgotPassword]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    //Header Fields
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    
-    //Method and Parameters
-    NSDictionary *parameters = @{
-                                 @"Email" : email,
-                                };
-    [request setHTTPMethod:@"POST"];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
-    [request setHTTPBody:postData];
-    
-    //Session Task
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-        if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
-        } else {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
-            } else {
-                completitionHandler(NO,responseDict);
-            }
-        }
-    }];
-    [postDataTask resume];
-}
-
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password deviceId:(NSString*)deviceId completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
@@ -142,6 +57,45 @@
     [request setHTTPMethod:@"POST"];
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
     [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
+}
+
+-(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kLogoutUser]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    
+    //Method and Parameters
+    [request setHTTPMethod:@"POST"];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -221,14 +175,14 @@
     [postDataTask resume];
 }
 
-- (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
+-(void)refreshToken:(NSString*)accessToken andDeviceId:(NSString*)deviceId withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kChangePassword]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kRefreshToken]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -237,12 +191,11 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     NSDictionary *parameters = @{
-                                 @"OldPassword" : oldPassword,
-                                 @"NewPassword" : newPassword,
+                                 @"RefreshToken" : accessToken,
+                                 @"DeviceId" : deviceId,
                                  };
     
     [request setHTTPMethod:@"POST"];
@@ -268,13 +221,15 @@
     [postDataTask resume];
 }
 
--(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+#pragma mark - Password Operations
+- (void)forgotPasswordForEmail:(NSString*)email withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kLogoutUser]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kForgotPassword]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -283,10 +238,14 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
+    NSDictionary *parameters = @{
+                                 @"Email" : email,
+                                 };
     [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+    [request setHTTPBody:postData];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -307,14 +266,14 @@
     [postDataTask resume];
 }
 
--(void)refreshToken:(NSString*)accessToken andDeviceId:(NSString*)deviceId withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+- (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kRefreshToken]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kChangePassword]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -323,11 +282,12 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     NSDictionary *parameters = @{
-                                 @"RefreshToken" : accessToken,
-                                 @"DeviceId" : deviceId,
+                                 @"OldPassword" : oldPassword,
+                                 @"NewPassword" : newPassword,
                                  };
     
     [request setHTTPMethod:@"POST"];
@@ -399,54 +359,15 @@
     [postDataTask resume];
 }
 
-
-#pragma mark - User Account
-- (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
-    NabooApp *app = [NabooApp sharedInstance];
-    
-    //Configuration
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kGetUserAccount]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    //Header Fields
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:kAuthorization];
-    
-    //Method and Parameters
-    [request setHTTPMethod:@"GET"];
-    
-    //Session Task
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-        if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
-        } else {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
-            } else {
-                completitionHandler(NO,responseDict);
-            }
-        }
-    }];
-    [postDataTask resume];
-}
-
-- (void)updateUserAccount:(NSDictionary *)userDict accessToken:(NSString*)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
+#pragma mark - Registration Operations
+-(void)registerUser:(NSDictionary *)userDict withCompletion:(nonnull void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kUpdateUserAccount]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kRegisterUser]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -455,7 +376,6 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     [request setHTTPMethod:@"POST"];
@@ -480,6 +400,182 @@
     }];
     [postDataTask resume];
 }
+
+- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kSubscribeDevice]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    
+    //Method and Parameters
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
+}
+
+#pragma mark - User Account Operations
+- (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kGetUserAccount]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:kApiKey forHTTPHeaderField:@"APIAccessKey"];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
+    
+    //Method and Parameters
+    [request setHTTPMethod:@"GET"];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
+}
+
+-(void)updateUserAccount:(NSMutableDictionary*)dict andAccessToken:(NSString*)accessToken withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kUpdateUserAccount]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for (id key in dict) {
+        NSString* string = [NSString stringWithFormat:@"%@",[dict objectForKey:key]];
+        if ([string isEqualToString:@""]) {
+            [array addObject:key];
+        }
+    }
+    
+    if (array.count > 0) {
+        [dict removeObjectsForKeys:array];
+    }
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
+    
+    //Method and Parameters
+    
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(YES,responseDict);
+        }
+    }];
+    [postDataTask resume];
+}
+
+- (void)updateUserImage:(NSString*)base64String andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kUserUploadImage]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
+    
+    //Method and Parameters
+    NSDictionary *parameters = @{
+                                 @"ImageBase64Data" : base64String,
+                                 };
+    
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode != 200) {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            completitionHandler(NO,responseDict);
+        } else {
+            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
+        }
+    }];
+    [postDataTask resume];
+}
+
 
 #pragma mark - Additional Data
 - (void)getSocialConnectors:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
@@ -564,15 +660,13 @@
     [postDataTask resume];
 }
 
-#pragma mark - Device Operations
-- (void)subscribeDevice:(NSDictionary *)dictionary completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable ))completitionHandler {
+- (void)getCountries:(NSString*)searchValue andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
-    NSError *error;
     
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kSubscribeDevice]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kCountries]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -580,11 +674,16 @@
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    [request addValue:kApiKey forHTTPHeaderField:@"APIAccessKey"];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
     
     //Method and Parameters
+    NSDictionary *parameters = @{
+                                 @"SearchValue" : searchValue,
+                                 };
+    
     [request setHTTPMethod:@"POST"];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     [request setHTTPBody:postData];
     
     //Session Task
@@ -596,7 +695,7 @@
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0 ) {
+            if (message == (id)[NSNull null] || message.length == 0) {
                 completitionHandler(YES,responseDict);
             } else {
                 completitionHandler(NO,responseDict);
