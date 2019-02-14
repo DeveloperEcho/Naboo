@@ -449,7 +449,7 @@
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",@"https://api-naboo-dev.azurewebsites.net/api/",@"GetUserAccount"]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kGetUserAccount]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -457,7 +457,7 @@
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:kApiKey forHTTPHeaderField:@"APIAccessKey"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:@"APIAccessKey"];
     [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
     
     //Method and Parameters
@@ -674,7 +674,7 @@
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:kApiKey forHTTPHeaderField:@"APIAccessKey"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken]  forHTTPHeaderField:@"Authorization"];
     
     //Method and Parameters
