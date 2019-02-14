@@ -449,7 +449,7 @@
     //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kGetUserAccount]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",@"https://api-naboo-dev.azurewebsites.net/api/",@"GetUserAccount"]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
