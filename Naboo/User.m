@@ -77,7 +77,7 @@
     [postDataTask resume];
 }
 
--(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+-(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger ))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
     //Configuration
@@ -92,7 +92,7 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken] forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     [request setHTTPMethod:@"POST"];
@@ -101,15 +101,19 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+               completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
             if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
@@ -175,7 +179,7 @@
     [postDataTask resume];
 }
 
--(void)refreshToken:(NSString*)accessToken andDeviceId:(NSString*)deviceId withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+-(void)refreshToken:(NSString*)refreshToken andDeviceId:(NSString*)deviceId withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -194,7 +198,7 @@
     
     //Method and Parameters
     NSDictionary *parameters = @{
-                                 @"RefreshToken" : accessToken,
+                                 @"RefreshToken" : refreshToken,
                                  @"DeviceId" : deviceId,
                                  };
     
@@ -266,7 +270,7 @@
     [postDataTask resume];
 }
 
-- (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler{
+- (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler{
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -282,7 +286,7 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken] forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     NSDictionary *parameters = @{
@@ -298,22 +302,26 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
             if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
     [postDataTask resume];
 }
 
--(void)setPassword:(NSString*)password withAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+-(void)setPassword:(NSString*)password withAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -329,7 +337,7 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
-    [request addValue:accessToken forHTTPHeaderField:kAuthorization];
+    [request addValue:[NSString stringWithFormat:@"Bearer %@",accessToken] forHTTPHeaderField:kAuthorization];
     
     //Method and Parameters
     NSDictionary *parameters = @{
@@ -344,15 +352,19 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
             if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
@@ -443,7 +455,7 @@
 }
 
 #pragma mark - User Account Operations
-- (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+- (void)getUserAccount:(NSString *)accessToken completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
     //Configuration
@@ -467,22 +479,26 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
             if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict);
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
     [postDataTask resume];
 }
 
--(void)updateUserAccount:(NSMutableDictionary*)dict andAccessToken:(NSString*)accessToken withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+-(void)updateUserAccount:(NSMutableDictionary*)dict andAccessToken:(NSString*)accessToken withCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     NSError *error;
     
@@ -521,17 +537,21 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(YES,responseDict);
+            completitionHandler(YES,responseDict,0);
         }
     }];
     [postDataTask resume];
 }
 
-- (void)updateUserImage:(NSString*)base64String andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+- (void)updateUserImage:(NSString*)base64String andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
     //Configuration
@@ -561,15 +581,19 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0) {
-                completitionHandler(YES,responseDict);
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
@@ -660,7 +684,7 @@
     [postDataTask resume];
 }
 
-- (void)getCountries:(NSString*)searchValue andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+- (void)getCountries:(NSString*)searchValue andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
     //Configuration
@@ -690,15 +714,19 @@
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
         if (statusCode != 200) {
-            NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(NO,responseDict);
+            if (statusCode == 401) {
+                completitionHandler(NO,nil,401);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict,0);
+            }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0) {
-                completitionHandler(YES,responseDict);
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict,0);
             } else {
-                completitionHandler(NO,responseDict);
+                completitionHandler(NO,responseDict,0);
             }
         }
     }];
