@@ -310,12 +310,7 @@
             }
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            NSString* message = [responseDict valueForKey:@"Message"];
-            if (message == (id)[NSNull null] || message.length == 0 ) {
-                completitionHandler(YES,responseDict,0);
-            } else {
-                completitionHandler(NO,responseDict,0);
-            }
+            completitionHandler(YES,responseDict,0);
         }
     }];
     [postDataTask resume];
