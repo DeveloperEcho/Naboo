@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)getCountries:(NSString*)searchValue andAccessToken:(NSString*)accessToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler;
 
+- (void)checkIfUserExists:(NSDictionary*)parameters andConnectorToken:(NSString*)connectorToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 
 //test bitcode
 @end
