@@ -38,4 +38,6 @@ static NSString * const kSocialConnectors = @"SocialConnectors";
 static NSString * const kUserInterests = @"UserInterests";
 static NSString * const kCountries = @"Countries";
 
+static NSString * const kCheckIfUserExists = @"SocialConnectorCheckIfUserExists";
+
 #endif /* Constants_h */
