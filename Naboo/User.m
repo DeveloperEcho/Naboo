@@ -718,7 +718,7 @@
     [postDataTask resume];
 }
 
-- (void)checkIfUserExists:(NSDictionary*)parameters andConnectorToken:(NSString*)connectorToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+- (void)checkIfUserExists:(NSString*)connectorToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
     //Configuration
@@ -736,9 +736,7 @@
     [request addValue:connectorToken  forHTTPHeaderField:kMobileToken];
     
     //Method and Parameters
-    [request setHTTPMethod:@"POST"];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"GET"];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
