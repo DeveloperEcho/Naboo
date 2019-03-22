@@ -39,5 +39,5 @@ static NSString * const kUserInterests = @"UserInterests";
 static NSString * const kCountries = @"Countries";
 
 static NSString * const kCheckIfUserExists = @"SocialConnectorCheckIfUserExists";
-
+static NSString * const kGetPrivacyPolicy = @"GetPrivacyPolicy";
 #endif /* Constants_h */

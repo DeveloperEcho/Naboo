@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)checkIfUserExists:(NSString*)connectorToken withCompletition:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 
+-(void)getPrivacyPolicy;
 //test bitcode
 @end
 
