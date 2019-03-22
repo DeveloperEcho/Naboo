@@ -764,7 +764,7 @@
 }
 
 
--(void)getPrivacyPolicy {
+-(void)getPrivacyPolicyWithCompletition:(void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     //Configuration
     NabooApp *app = [NabooApp sharedInstance];
     
