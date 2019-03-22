@@ -764,7 +764,7 @@
 }
 
 
--(void)getPrivacyPolicyWithCompletition:(void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+-(void)getPrivacyPolicyWithVersion:(NSInteger)versionNo WithCompletition:(void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
     //Configuration
     NabooApp *app = [NabooApp sharedInstance];
     
@@ -775,12 +775,13 @@
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
     
+    NSDictionary *parameters = @{ @"VersionNo" : [NSNumber numberWithInteger:versionNo]};
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
-    [request setHTTPMethod:@"GET"];
+    [request setHTTPMethod:@"POST"];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
