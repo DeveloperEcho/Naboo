@@ -765,9 +765,11 @@
 
 
 -(void)getPrivacyPolicyWithVersion:(NSInteger)versionNo WithCompletition:(void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
-    //Configuration
-    NabooApp *app = [NabooApp sharedInstance];
     
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kGetPrivacyPolicy]];
@@ -775,13 +777,19 @@
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
     
-    NSDictionary *parameters = @{ @"VersionNo" : [NSNumber numberWithInteger:versionNo]};
     //Header Fields
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
     
+    //Method and Parameters
+    NSDictionary *parameters = @{
+                                 @"Version" : versionNo,
+                                 };
+    
     [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+    [request setHTTPBody:postData];
     
     //Session Task
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -791,7 +799,12 @@
             completitionHandler(NO,responseDict);
         } else {
             NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            completitionHandler(YES,responseDict);
+            NSString* message = [responseDict valueForKey:@"Message"];
+            if (message == (id)[NSNull null] || message.length == 0 ) {
+                completitionHandler(YES,responseDict);
+            } else {
+                completitionHandler(NO,responseDict);
+            }
         }
     }];
     [postDataTask resume];
