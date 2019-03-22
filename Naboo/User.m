@@ -784,7 +784,7 @@
     
     //Method and Parameters
     NSDictionary *parameters = @{
-                                 @"Version" : versionNo,
+                                 @"Version" : [NSNumber numberWithInteger:versionNo]
                                  };
     
     [request setHTTPMethod:@"POST"];
