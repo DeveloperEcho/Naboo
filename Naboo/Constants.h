@@ -40,4 +40,8 @@ static NSString * const kCountries = @"Countries";
 
 static NSString * const kCheckIfUserExists = @"SocialConnectorCheckIfUserExists";
 static NSString * const kGetPrivacyPolicy = @"GetPrivacyPolicy";
+
+//Messages for nil Data error
+static NSString * const kDefaultErrorMessage = @"An error occurred, please try again later";
+
 #endif /* Constants_h */
