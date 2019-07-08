@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)forgotPasswordForEmail:(NSString*)email withCompletitionHandler:(void (^)(BOOL success, NSDictionary * _Nullable))completitionHandler;
 -(void)loginWithEmail:(NSString *)email password:(NSString *)password deviceId:(NSString*)deviceId completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
 
+-(void)loginWithFacebook:(NSDictionary*)dict completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable))completitionHandler;
+
 -(void)connectWithSocialConnector:(NSString *)socialConnector urlScheme:(NSString*)urlScheme controller:(UIViewController*)controller completitionHandler:(nonnull void (^)(BOOL, NSString * _Nullable))completitionHandler;
 - (void)changePasswordWithAccessToken:(NSString*)accessToken oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger))completitionHandler;
 -(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger ))completitionHandler;

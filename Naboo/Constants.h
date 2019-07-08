@@ -18,6 +18,7 @@ static NSString * const kLoginUser = @"LoginUser";
 static NSString * const kLogoutUser = @"LogoutUser";
 static NSString * const kRefreshToken = @"RefreshToken";
 static NSString * const kSocialConnectorSignIn = @"SocialConnectorSignin";
+static NSString * const kFacebookLogin = @"FacebookSignin";
 
 //Password Endpoints
 static NSString * const kForgotPassword = @"ForgotPassword";

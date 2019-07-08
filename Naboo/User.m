@@ -80,6 +80,51 @@
     [postDataTask resume];
 }
 
+- (void)loginWithFacebook:(NSDictionary *)dict completitionHandler:(void (^)(BOOL, NSDictionary * _Nullable))completitionHandler {
+    NabooApp *app = [NabooApp sharedInstance];
+    NSError *error;
+    
+    //Configuration
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",app.configuration.server,kFacebookLogin]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    //Header Fields
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:app.configuration.applicationId forHTTPHeaderField:kApiKey];
+    
+    NSDictionary *parameters = dict;
+    
+    [request setHTTPMethod:@"POST"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    //Session Task
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        // Ensure there is data
+        if (data != nil) {
+            if (statusCode != 200) {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(NO,responseDict);
+            } else {
+                NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                completitionHandler(YES,responseDict);
+            }
+        } else {
+            NSDictionary* errorDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                       kDefaultErrorMessage, @"Message",
+                                       nil];
+            completitionHandler(NO,errorDict);
+        }
+    }];
+    [postDataTask resume];
+}
+
 -(void)logoutUserWithAccessToken:(NSString*)accessToken andCompletitionHandler:(nonnull void (^)(BOOL, NSDictionary * _Nullable, NSInteger ))completitionHandler {
     NabooApp *app = [NabooApp sharedInstance];
     
